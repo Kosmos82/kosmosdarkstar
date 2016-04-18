@@ -1,11 +1,12 @@
----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------
 -- func: zone
+-- auth: <Unknown> :: Modded by atom0s, Kosmos.
 -- desc: Teleports a player to the given zone.
 ---------------------------------------------------------------------------------------------------
 
 cmdprops =
 {
-    permission = 1,
+    permission = 0,
     parameters = "s"
 };
 
@@ -272,9 +273,12 @@ local zone_list =
     { 0x27, 0x5A, 280 }, -- Mog Garden
     { 0x27, 0x59, 284 }, -- Celennia Memorial Library
     { 0x27, 0x5B, 285 }, -- Feretory
-    { 0x14, 0x09, 288 }, -- Escha - Zi'Tah
 };
-
+-- Blocked zones includes Abyssea, Adoulin, and ALL instances
+-- Can be modded for any set of zones.
+local blockedZones = {
+    15,45,49,131,132,133,138,155,156,182,183,189,199,210,214,215,216,217,218,219,220,221,222,223,224,225,226,227,228,229,253,254,255,263,270,274,276,277,278,279,281,282,283,55,56,60,63,66,69,73,74,75,76,77,86,93,129,183,15,45,132,131,133,215,216,217,218,253,254,255,258,259,263,264,270,271,274,275,276,277,278,279,281,282,283,285
+}
 ---------------------------------------------------------------------------------------------------
 -- func: onTrigger
 -- desc: Called when this command is invoked.
@@ -283,13 +287,22 @@ function onTrigger(player, zoneId)
     local word  = "";
     local i     = 0;
     local zone  = zoneId;
-
+    local blocked = false;
+    
     -- Ensure a zone was given..
     if (zoneId == nil) then
         player:PrintToPlayer("You must enter a zone id.");
         return;
     end
     
+    for _, v in ipairs(blockedZones) do
+        if(tonumber(zoneId) == v) then
+            player:PrintToPlayer(string.format("You cannot enter this zone!"));
+            blocked = true;
+            return;
+        end
+    end
+
     -- Was the zone auto-translated..
     if (string.sub(zoneId, 1, 2) == '\253\02' and string.byte(zoneId, 5) ~= nil and string.byte(zoneId, 6) == 0xFD) then
         -- Pull the group and message id from the translated string..
@@ -299,7 +312,16 @@ function onTrigger(player, zoneId)
         -- Attempt to lookup this zone..
         for k, v in pairs(zone_list) do
             if (v[1] == groupId and v[2] == messageId) then
-                player:setPos(0, 0, 0, 0, v[3]);
+                for _, id in ipairs(blockedZones) do
+                    if (v[3] == id) then
+                        player:PrintToPlayer(string.format("You cannot enter this zone!"));
+                        blocked = true;
+                        return;
+                    end
+                end
+                if(not blocked) then
+                    player:setPos(0, 0, 0, 0, v[3]);
+                end;
                 return;
             end
         end
@@ -309,5 +331,7 @@ function onTrigger(player, zoneId)
         return;
     end
     
-    player:setPos(0, 0, 0, 0, zoneId);
+    if(not blocked) then
+        player:setPos(0, 0, 0, 0, zoneId);
+    end
 end

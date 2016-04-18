@@ -21,12 +21,25 @@ function onGameIn(player, firstlogin, zoning)
     if (not zoning) then -- Things checked ONLY during logon go here.
         if (firstlogin) then
             CharCreate(player);
+		player:PrintToServer(string.format("The character %s has just been created...", player:getName()), 0x1C);
+	  	 player:addStatusEffect(EFFECT_REFRESH,28,0,0);
+         player:addStatusEffect(EFFECT_REGEN,25,0,0);
+         player:addStatusEffect(EFFECT_REGAIN,15,1,0);
+         player:PrintToPlayer( "TP/HP/MP are being restored, if you die use @regen to re-activate!" );
         end
-    end
+	player:PrintToServer(string.format("The character %s has logged in...", player:getName()), 0x1C);
+	player:addStatusEffect(EFFECT_REFRESH,28,0,0);
+        player:addStatusEffect(EFFECT_REGEN,25,0,0);
+        player:addStatusEffect(EFFECT_REGAIN,15,1,0);
+        player:PrintToPlayer( "TP/HP/MP are being restored, if you die use @regen to re-activate!" );
+        end
 
     if (zoning) then -- Things checked ONLY during zone in go here.
-        -- Nothing here yet :P
-    end
+	 player:addStatusEffect(EFFECT_REFRESH,28,0,0);
+        player:addStatusEffect(EFFECT_REGEN,25,0,0);
+        player:addStatusEffect(EFFECT_REGAIN,15,1,0);
+        player:PrintToPlayer( "TP/HP/MP are being restored, if you die use @regen to re-activate!" );
+                 end
 
     -- Things checked BOTH during logon AND zone in below this line.
     checkForGearSet(player);

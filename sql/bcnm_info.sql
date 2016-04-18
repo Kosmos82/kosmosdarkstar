@@ -295,3 +295,5 @@ INSERT INTO `bcnm_info` VALUES ('1304', '37', 'Central_Temenos_2nd_Floor', null,
 INSERT INTO `bcnm_info` VALUES ('1305', '37', 'Central_Temenos_3rd_Floor', null, null,	 '2700', '0', '18', '0', '7');
 INSERT INTO `bcnm_info` VALUES ('1306', '37', 'Central_Temenos_4th_Floor', null, null, '3600', '0', '18', '0', '7');
 INSERT INTO `bcnm_info` VALUES ('1307', '37', 'Central_Temenos_4th_Floor_II', null, null, '3600', '0', '18', '0', '7');
+INSERT INTO `bcnm_info` VALUES ('1308', '36', 'Epona', null, null,   '2700', '0', '18', '0', '0');
+

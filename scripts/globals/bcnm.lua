@@ -58,7 +58,7 @@ bcnmid_param_map = {6, {640, 0},
                   31, {960, 0, 961, 1},
                   32, {992, 0, 993, 1},
                   35, {1024, 0},
-                  36, {1056, 0},
+                  36, {1056, 0, 1308, 1},
                   139, {0, 0, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 10, 10, 11, 11, 12, 12, 15, 15, 17, 17},
                   140, {32, 0, 33, 1, 34, 2, 35, 3, 36, 4},
                   144, {65, 1, 73, 9, 64, 0, 67, 3, 68, 4, 70, 6, 71, 7, 72, 8, 81, 17, 76, 12, 82, 18, 79, 15},
@@ -713,6 +713,7 @@ function CutsceneSkip(player, npc)
     elseif (Zone == 36) then -- Empyreal Paradox
         if ((player:hasCompletedMission(COP, DAWN)) or (player:getCurrentMission(COP) == DAWN and player:getVar("PromathiaStatus") > 2)) then -- dawn
             skip = 1;
+	
         end
     elseif (Zone == 139) then -- Horlais Peak
         if ((player:hasCompletedMission(BASTOK, THE_EMISSARY_SANDORIA2) or player:hasCompletedMission(WINDURST, THE_THREE_KINGDOMS_SANDORIA2)) or

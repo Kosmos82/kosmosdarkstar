@@ -38,14 +38,18 @@ end;
 -----------------------------------
 
 function onEffectGain(target,effect)
-    target:addMod(MOD_HP, 20);
-    target:addMod(MOD_STR, 5);
-    target:addMod(MOD_DEX, 6);
-    target:addMod(MOD_FOOD_ACCP, 15);
-    target:addMod(MOD_FOOD_ACC_CAP, 72);
-    target:addMod(MOD_FOOD_RACCP, 15);
-    target:addMod(MOD_FOOD_RACC_CAP, 72);
-    target:addMod(MOD_SLEEPRES, 5);
+	target:addMod(MOD_STR, 25);
+	target:addMod(MOD_DEX, 26);
+	target:addMod(MOD_AGI, 26);
+	target:addMod(MOD_ACCP, 50);
+	target:addMod(MOD_RACCP, 50);
+	target:addMod(MOD_SLEEPRES, 5);
+	target:addMod(MOD_REGAIN, 5);
+	target:addMod(MOD_ATTP, 100);
+	target:addMod(MOD_RATTP, 100);
+	target:addMod(MOD_STORETP, 5);
+	target:addMod(MOD_HASTE_MAGIC, 1);
+	target:addMod(MOD_ALL_SONGS_EFFECT, 1);
 end;
 
 -----------------------------------------
@@ -53,12 +57,16 @@ end;
 -----------------------------------------
 
 function onEffectLose(target,effect)
-    target:delMod(MOD_HP, 20);
-    target:delMod(MOD_STR, 5);
-    target:delMod(MOD_DEX, 6);
-    target:delMod(MOD_FOOD_ACCP, 15);
-    target:delMod(MOD_FOOD_ACC_CAP, 72);
-    target:delMod(MOD_FOOD_RACCP, 15);
-    target:delMod(MOD_FOOD_RACC_CAP, 72);
-    target:delMod(MOD_SLEEPRES, 5);
+	target:delMod(MOD_STR, 25);
+	target:delMod(MOD_DEX, 26);
+	target:delMod(MOD_AGI, 26);
+	target:delMod(MOD_ACCP, 50);
+	target:delMod(MOD_RACCP, 50);
+	target:delMod(MOD_SLEEPRES, 5);
+	target:delMod(MOD_REGAIN, 5);
+	target:delMod(MOD_ATTP, 100);
+	target:delMod(MOD_RATTP, 100);
+	target:delMod(MOD_STORETP, 5);
+	target:delMod(MOD_HASTE_MAGIC, 1);
+	target:delMod(MOD_ALL_SONGS_EFFECT, 1);
 end;

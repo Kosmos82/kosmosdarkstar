@@ -3664,13 +3664,219 @@ void SmallPacket0x0AD(map_session_data_t* session, CCharEntity* PChar, CBasicPac
     }
     return;
 }
-
 /************************************************************************
 *                                                                       *
 *  Chat Message                                                         *
 *                                                                       *
 ************************************************************************/
 
+void SmallPacket0x0B5(map_session_data_t* session, CCharEntity* PChar, CBasicPacket data)
+{
+    if (RBUFB(data, (0x06)) == '@' && CmdHandler.call(PChar, (const int8*)data[7]) == 0)
+    {
+        //this makes sure a command isn't sent to chat
+    }
+    else if (RBUFB(data, (0x06)) == '#' && PChar->nameflags.flags & FLAG_GM)
+    {
+        message::send(MSG_CHAT_SERVMES, 0, 0, new CChatMessagePacket(PChar, MESSAGE_SYSTEM_1, data[7]));
+    }
+    else
+    {
+        if (jailutils::InPrison(PChar))
+        {
+            if (RBUFB(data, (0x04)) == MESSAGE_SAY)
+            {
+                PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE, new CChatMessagePacket(PChar, MESSAGE_SAY, data[6]));
+            }
+            else
+            {
+                PChar->pushPacket(new CMessageBasicPacket(PChar, PChar, 0, 0, 316));
+            }
+        }
+        else
+        {
+            switch (RBUFB(data, (0x04)))
+            {
+            case MESSAGE_SAY:
+            {
+                if (map_config.audit_chat == 1 && map_config.audit_say == 1)
+                {
+                    std::string qStr = ("INSERT into audit_chat (speaker,type,message,datetime) VALUES('");
+                    qStr += PChar->GetName();
+                    qStr += "','SAY','";
+                    qStr += escape(data[6]);
+                    qStr += "',current_timestamp());";
+                    const char * cC = qStr.c_str();
+                    Sql_QueryStr(SqlHandle, cC);
+                }
+               // PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE, new CChatMessagePacket(PChar, MESSAGE_SAY, data[6]));
+                for (uint16 zone = 0; zone < MAX_ZONEID; ++zone)
+                            {
+                               zoneutils::GetZone(zone)->PushPacket(
+                                  PChar,
+                                  CHAR_INZONE,
+                                  new CChatMessagePacket(PChar, MESSAGE_YELL, data[6]));
+                            }
+            }
+            break;
+            case MESSAGE_EMOTION:    PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE, new CChatMessagePacket(PChar, MESSAGE_EMOTION, data[6])); break;
+            case MESSAGE_SHOUT:
+            {
+                if (map_config.audit_chat == 1 && map_config.audit_shout == 1)
+                {
+                    std::string qStr = ("INSERT into audit_chat (speaker,type,message,datetime) VALUES('");
+                    qStr += PChar->GetName();
+                    qStr += "','SHOUT','";
+                    qStr += escape(data[6]);
+                    qStr += "',current_timestamp());";
+                    const char * cC = qStr.c_str();
+                    Sql_QueryStr(SqlHandle, cC);
+                }
+                //PChar->loc.zone->PushPacket(PChar, CHAR_INSHOUT, new CChatMessagePacket(PChar, MESSAGE_SHOUT, data[6]));
+                         for (uint16 zone = 0; zone < MAX_ZONEID; ++zone)
+                            {
+                               zoneutils::GetZone(zone)->PushPacket(
+                                  PChar,
+                                  CHAR_INZONE,
+                                  new CChatMessagePacket(PChar, MESSAGE_YELL, data[6]));
+                            }
+            }
+            break;
+            case MESSAGE_LINKSHELL:
+            {
+                if (PChar->PLinkshell1 != nullptr)
+                {
+                    int8 packetData[8] {};
+                    WBUFL(packetData, 0) = PChar->PLinkshell1->getID();
+                    WBUFL(packetData, 4) = PChar->id;
+                    message::send(MSG_CHAT_LINKSHELL, packetData, sizeof packetData, new CChatMessagePacket(PChar, MESSAGE_LINKSHELL, data[6]));
+
+                    if (map_config.audit_chat == 1 && map_config.audit_linkshell == 1)
+                    {
+                        std::string qStr = ("INSERT into audit_chat (speaker,type,message,datetime) VALUES('");
+                        qStr += PChar->GetName();
+                        qStr += "','LINKSHELL','";
+                        qStr += escape(data[6]);
+                        qStr += "',current_timestamp());";
+                        const char * cC = qStr.c_str();
+                        Sql_QueryStr(SqlHandle, cC);
+                    }
+                }
+            }
+            break;
+            case MESSAGE_LINKSHELL2:
+            {
+                if (PChar->PLinkshell2 != nullptr)
+                {
+                    int8 packetData[8] {};
+                    WBUFL(packetData, 0) = PChar->PLinkshell2->getID();
+                    WBUFL(packetData, 4) = PChar->id;
+                    message::send(MSG_CHAT_LINKSHELL, packetData, sizeof packetData, new CChatMessagePacket(PChar, MESSAGE_LINKSHELL, data[6]));
+
+                    if (map_config.audit_chat == 1 && map_config.audit_linkshell == 1)
+                    {
+                        std::string qStr = ("INSERT into audit_chat (speaker,type,message,datetime) VALUES('");
+                        qStr += PChar->GetName();
+                        qStr += "','LINKSHELL','";
+                        qStr += escape(data[6]);
+                        qStr += "',current_timestamp());";
+                        const char * cC = qStr.c_str();
+                        Sql_QueryStr(SqlHandle, cC);
+                    }
+                }
+            }
+            break;
+            case MESSAGE_PARTY:
+            {
+                if (PChar->PParty != nullptr)
+                {
+                    int8 packetData[8] {};
+                    WBUFL(packetData, 0) = PChar->PParty->GetPartyID();
+                    WBUFL(packetData, 4) = PChar->id;
+                    message::send(MSG_CHAT_PARTY, packetData, sizeof packetData, new CChatMessagePacket(PChar, MESSAGE_PARTY, data[6]));
+
+                    if (map_config.audit_chat == 1 && map_config.audit_party == 1)
+                    {
+                        std::string qStr = ("INSERT into audit_chat (speaker,type,message,datetime) VALUES('");
+                        qStr += PChar->GetName();
+                        qStr += "','PARTY','";
+                        qStr += escape(data[6]);
+                        qStr += "',current_timestamp());";
+                        const char * cC = qStr.c_str();
+                        Sql_QueryStr(SqlHandle, cC);
+                    }
+                }
+            }
+            break;
+              case MESSAGE_YELL:
+            {
+                            if (map_config.audit_chat == 1 && map_config.audit_yell == 1)
+                            {
+                                std::string qStr = ("INSERT into audit_chat (speaker,type,message,datetime) VALUES('");
+                                qStr += PChar->GetName();
+                                qStr += "','YELL','";
+                                qStr += escape(data[6]);
+                                qStr += "',current_timestamp());";
+                                const char * cC = qStr.c_str();
+                                Sql_QueryStr(SqlHandle, cC);
+                            }
+                            for (uint16 zone = 0; zone < MAX_ZONEID; ++zone)
+                            {
+                               zoneutils::GetZone(zone)->PushPacket(
+                                  PChar,
+                                  CHAR_INZONE,
+                                  new CChatMessagePacket(PChar, MESSAGE_YELL, data[6]));
+                            }
+                            //PChar->pushPacket(new CMessageStandardPacket(PChar, 0, 256));
+            }
+               break;
+          /*  case MESSAGE_YELL:
+            {
+                if (PChar->loc.zone->CanUseMisc(MISC_YELL))
+                {
+                    if (gettick() >= PChar->m_LastYell)
+                    {
+                        PChar->m_LastYell = gettick() + (map_config.yell_cooldown * 1000);
+                        // ShowDebug(CL_CYAN" LastYell: %u \n" CL_RESET, PChar->m_LastYell);
+                        int8 packetData[4] {};
+                        WBUFL(packetData, 0) = PChar->id;
+
+                        message::send(MSG_CHAT_YELL, packetData, sizeof packetData, new CChatMessagePacket(PChar, MESSAGE_YELL, data[6]));
+                    }
+                    else // You must wait longer to perform that action.
+                    {
+                        PChar->pushPacket(new CMessageStandardPacket(PChar, 0, 38));
+                    }
+
+                    if (map_config.audit_chat == 1 && map_config.audit_yell == 1)
+                    {
+                        std::string qStr = ("INSERT into audit_chat (speaker,type,message,datetime) VALUES('");
+                        qStr += PChar->GetName();
+                        qStr += "','YELL','";
+                        qStr += escape(data[6]);
+                        qStr += "',current_timestamp());";
+                        const char * cC = qStr.c_str();
+                        Sql_QueryStr(SqlHandle, cC);
+                    }
+                }
+                else // You cannot use that command in this area.
+                {
+                    PChar->pushPacket(new CMessageStandardPacket(PChar, 0, 256));
+                }
+            }
+            break; */
+            }
+        }
+    }
+
+    return;
+}
+/************************************************************************
+*                                                                       *
+*  Chat Message Orignal                                                        *
+*                                                                       *
+************************************************************************/
+/*
 void SmallPacket0x0B5(map_session_data_t* session, CCharEntity* PChar, CBasicPacket data)
 {
     if (RBUFB(data, (0x06)) == '@' && CmdHandler.call(PChar, (const int8*)data[7]) == 0)

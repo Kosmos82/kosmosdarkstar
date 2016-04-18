@@ -35,9 +35,17 @@ end;
 -----------------------------------
 
 function onEffectGain(target,effect)
-    target:addMod(MOD_MP, 25);
-    target:addMod(MOD_AGI, -1);
-    target:addMod(MOD_INT, 4);
+    target:addMod(MOD_MP, 200);
+	target:addMod(MOD_AGI, -1);
+	target:addMod(MOD_INT, 25);
+	target:addMod(MOD_CURE_POTENCY, 25)
+	target:addMod(MOD_VIT, 25);
+	target:addMod(MOD_CHR, 25);
+	target:addMod(MOD_MND, 25);
+	target:addMod(MOD_MPHEAL, 50);
+	target:addMod(MOD_HASTE_MAGIC, 1);
+	target:addMod(MOD_ALL_SONGS_EFFECT, 1);
+	target:addMod(MOD_DMGMAGIC, 10);
 end;
 
 -----------------------------------------
@@ -45,7 +53,15 @@ end;
 -----------------------------------------
 
 function onEffectLose(target,effect)
-    target:delMod(MOD_MP, 25);
-    target:delMod(MOD_AGI, -1);
-    target:delMod(MOD_INT, 4);
+	target:delMod(MOD_MP, 200);
+	target:delMod(MOD_AGI, -1);
+	target:delMod(MOD_INT, 25);
+	target:delMod(MOD_CURE_POTENCY, 25)
+	target:delMod(MOD_VIT, 25);
+	target:delMod(MOD_CHR, 25);
+	target:delMod(MOD_MND, 25);
+	target:delMod(MOD_MPHEAL, 50);
+	target:delMod(MOD_HASTE_MAGIC, 1);
+	target:delMod(MOD_ALL_SONGS_EFFECT, 1);
+	target:delMod(MOD_DMGMAGIC, 10);
 end;

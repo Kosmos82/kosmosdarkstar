@@ -42,16 +42,19 @@ end;
 -----------------------------------
 
 function onEffectGain(target,effect)
-    target:addMod(MOD_HP, 20);
-    target:addMod(MOD_MP, 20);
-    target:addMod(MOD_DEX, 4);
-    target:addMod(MOD_AGI, 4);
-    target:addMod(MOD_VIT, 6);
-    target:addMod(MOD_CHR, 4);
-    target:addMod(MOD_FOOD_DEFP, 25);
-    target:addMod(MOD_FOOD_DEF_CAP, 150);
-    target:addMod(MOD_HPHEAL, 1);
-    target:addMod(MOD_MPHEAL, 1);
+	target:addMod(MOD_HP, 200);
+	target:addMod(MOD_MP, 200);
+	target:addMod(MOD_DEX, 24);
+	target:addMod(MOD_AGI, 24);
+	target:addMod(MOD_VIT, 26);
+	target:addMod(MOD_CHR, 24);
+	target:addMod(MOD_FOOD_DEFP, 100);
+	target:addMod(MOD_HPHEAL, 20);
+	target:addMod(MOD_MPHEAL, 20);
+	target:addMod(MOD_HASTE_MAGIC, 1);
+	target:addMod(MOD_ALL_SONGS_EFFECT, 1);
+	target:addMod(MOD_REGAIN, 5);
+	target:addMod(MOD_ENMITY, 100);
 end;
 
 -----------------------------------------
@@ -59,14 +62,17 @@ end;
 -----------------------------------------
 
 function onEffectLose(target,effect)
-    target:delMod(MOD_HP, 20);
-    target:delMod(MOD_MP, 20);
-    target:delMod(MOD_DEX, 4);
-    target:delMod(MOD_AGI, 4);
-    target:delMod(MOD_VIT, 6);
-    target:delMod(MOD_CHR, 4);
-    target:delMod(MOD_FOOD_DEFP, 25);
-    target:delMod(MOD_FOOD_DEF_CAP, 150);
-    target:delMod(MOD_HPHEAL, 1);
-    target:delMod(MOD_MPHEAL, 1);
+	target:delMod(MOD_HP, 200);
+	target:delMod(MOD_MP, 200);
+	target:delMod(MOD_DEX, 24);
+	target:delMod(MOD_AGI, 24);
+	target:delMod(MOD_VIT, 26);
+	target:delMod(MOD_CHR, 24);
+	target:delMod(MOD_FOOD_DEFP, 100);
+	target:delMod(MOD_HPHEAL, 20);
+	target:delMod(MOD_MPHEAL, 20);
+	target:delMod(MOD_HASTE_MAGIC, 1);
+	target:delMod(MOD_ALL_SONGS_EFFECT, 1);
+	target:delMod(MOD_REGAIN, 5);
+	target:delMod(MOD_ENMITY, 100);
 end;
