@@ -28,7 +28,7 @@ function onGameIn(player, firstlogin, zoning)
 	 player:addStatusEffect(EFFECT_REFRESH,28,0,0);
          player:addStatusEffect(EFFECT_REGEN,25,0,0);
          player:addStatusEffect(EFFECT_REGAIN,15,1,0);
-         player:PrintToPlayer( "TP/HP/MP are being restored, if you die use @regen to re-activate!", 0x1C );
+         player:PrintToPlayer("TP/HP/MP are being restored, if you die use @regen to re-activate!", 0x1C );
         end
 	if player:hasItem(515) then
         -- Do Nothing
@@ -47,14 +47,14 @@ function onGameIn(player, firstlogin, zoning)
 	player:addStatusEffect(EFFECT_REFRESH,28,0,0);
         player:addStatusEffect(EFFECT_REGEN,25,0,0);
         player:addStatusEffect(EFFECT_REGAIN,15,1,0);
-        player:PrintToPlayer( "TP/HP/MP are being restored, if you die use @regen to re-activate!", 0x1C );
+        player:PrintToPlayer("TP/HP/MP are being restored, if you die use @regen to re-activate!", 0x1C );
         end
 
     if (zoning) then -- Things checked ONLY during zone in go here.
 	 player:addStatusEffect(EFFECT_REFRESH,28,0,0);
         player:addStatusEffect(EFFECT_REGEN,25,0,0);
         player:addStatusEffect(EFFECT_REGAIN,15,1,0);
-        player:PrintToPlayer( "TP/HP/MP are being restored, if you die use @regen to re-activate!", 0x1C );
+        player:PrintToPlayer("TP/HP/MP are being restored, if you die use @regen to re-activate!", 0x1C );
                  end
 
     -- Things checked BOTH during logon AND zone in below this line.
