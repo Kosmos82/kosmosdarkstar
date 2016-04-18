@@ -22,7 +22,7 @@ function onGameIn(player, firstlogin, zoning)
         if (firstlogin) then
             CharCreate(player);
          if not(player:hasItem(515)) then
-	     player:AddLinkpearl("Kosmos");
+	     player:addLinkpearl("Kosmos");
          end
          player:PrintToServer(string.format("The character %s has just been created...", player:getName()), 0x1C);
 	 player:addStatusEffect(EFFECT_REFRESH,28,0,0);
@@ -40,7 +40,7 @@ function onGameIn(player, firstlogin, zoning)
         -- Do Nothing
         --player:PrintToPlayer("You have 513 (Shell)");
         else
-        player:AddLinkpearl("Kosmos");
+        player:addLinkpearl("Kosmos");
         player:PrintToServer(string.format("%s has joined Kosmos, Linkshell~", player:getName()), 0xE)
         end
 	player:PrintToServer(string.format("The character %s has logged in...", player:getName()), 0x1C);
