@@ -168,6 +168,43 @@ inline int32 CLuaBaseEntity::leavegame(lua_State *L)
 
 //==========================================================//
 
+inline int32 CLuaBaseEntity::addLinkshell(lua_State* L)
+{
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype == TYPE_NPC);
+
+    const int8* linkshellName = lua_tostring(L, 1);
+    const int8* Query = "SELECT name FROM linkshells WHERE name='%s'";
+    int32 ret = Sql_Query(SqlHandle, Query, linkshellName);
+
+    if (ret != SQL_ERROR && Sql_NumRows(SqlHandle) != 0 && Sql_NextRow(SqlHandle) == SQL_SUCCESS)
+    {
+        CCharEntity* PChar = (CCharEntity*)m_PBaseEntity;
+        CItemLinkshell* PLinkshell = NULL;
+
+        Query = "SELECT linkshellid,color FROM linkshells WHERE name='%s'";
+        ret = Sql_Query(SqlHandle, Query, linkshellName);
+        if (ret != SQL_ERROR && Sql_NumRows(SqlHandle) != 0 && Sql_NextRow(SqlHandle) == SQL_SUCCESS)
+        {
+            CItem* PItem = itemutils::GetItem(515);
+
+            int8 EncodedString[16];
+            EncodeStringLinkshell((int8*)linkshellName, EncodedString);
+            PItem->setSignature(EncodedString);
+            ((CItemLinkshell*)PItem)->SetLSID(Sql_GetUIntData(SqlHandle, 0));
+            ((CItemLinkshell*)PItem)->SetLSColor(Sql_GetIntData(SqlHandle, 1));
+            charutils::AddItem(PChar, LOC_INVENTORY, PItem);
+         
+         std::string qStr = ("UPDATE char_inventory SET signature='");
+         qStr += linkshellName;
+         qStr += "' WHERE charid = " + std::to_string(PChar->id);
+         qStr += " AND itemId = 515 AND signature = ''";
+         Sql_Query(SqlHandle, qStr.c_str());
+      }
+    }
+    return 1;
+}
+
+//=========================================================//
 inline int32 CLuaBaseEntity::ChangeMusic(lua_State *L)
 {
     DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
@@ -10448,6 +10485,7 @@ const int8 CLuaBaseEntity::className[] = "CBaseEntity";
 
 Lunar<CLuaBaseEntity>::Register_t CLuaBaseEntity::methods[] =
 {
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity, addLinkshell),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,ChangeMusic),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,warp),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,leavegame),
